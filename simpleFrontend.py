@@ -1,5 +1,6 @@
-import pygame
+import pygame,sys
 from pygame.locals import *
+import os
 
 SCREEN_W = 640
 SCREEN_H = 480
@@ -13,6 +14,15 @@ pygame.display.set_caption("Simple Frontend")
 
 running = True
 
+#
+# Constants
+#
+ROM_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)),'roms')
+SNAPS_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)),'snaps')
+
+#
+# Init skin graphics
+#
 BACKDROP_IMG = pygame.image.load("assets/img/hg2.png").convert()
 
 CABINET_IMG = pygame.image.load("assets/img/cab.png").convert()
@@ -25,7 +35,19 @@ screen.blit(BACKDROP_IMG,[0,0])
 screen.blit(LOGO_LINE_IMG,[0,0])
 screen.blit(CABINET_IMG,[107,201])
 
+#
+# Init fonts
+#
+LABEL_COLOR = (255,131,0)
+FOCUS_COLOR = (255,255,255)
+FONT = pygame.font.Font("assets/fonts/fff_spacedust.ttf",8)
+
+
+### temp
+label = FONT.render('Test Label Incorporated',False,LABEL_COLOR); 
+screen.blit(label,[0,0])
 pygame.display.update();
+### end of temp
 
 while running:
 
