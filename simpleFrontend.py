@@ -1,6 +1,7 @@
 import pygame,sys
 from pygame.locals import *
 import os
+import subprocess
 
 SCREEN_W = 640
 SCREEN_H = 480
@@ -10,7 +11,7 @@ pygame.init()
         
 screen = pygame.display.set_mode((SCREEN_W,SCREEN_H))
 pygame.display.set_caption("Simple Frontend")
-#pygame.mouse.set_visible(False)
+pygame.mouse.set_visible(False)
 
 running = True
 need_update=True
@@ -19,6 +20,7 @@ need_update=True
 #
 ROM_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)),'roms')
 SNAPS_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)),'snaps')
+EMU_PATH = 'mame'
 
 #
 # Init skin graphics
@@ -54,6 +56,14 @@ def update_rom_list_data(dirPath):
 
     return result
 
+def run(rom_name):
+    
+    cmd = EMU_PATH+' '+rom_name 
+    subprocess.call([EMU_PATH,rom_name],stdout=subprocess.PIPE,stdin=subprocess.PIPE)
+    global need_update
+    need_update = True
+    os.system('clear')
+    
 #
 # Rom list control
 #
@@ -175,7 +185,8 @@ rom_list.set_data(rom_list_data)
 
 img_box=ImageBox((222,165))
 
-
+os.system('setterm -cursor off')
+os.system('clear')
 
 while running:
     
@@ -199,6 +210,9 @@ while running:
             if event.key == pygame.K_RIGHT:
                 rom_list.page_down()
                 need_update=True
+
+            if event.key == pygame.K_SPACE:
+                run(rom_list.get_selected())
                 
         ### end of temp
         
@@ -218,6 +232,7 @@ while running:
             screen.blit(CABINET_IMG,[107,201])
             screen.blit(rom_list,[325,100])
             pygame.display.update();
-            
+
+os.system('setterm -cursor on')           
 pygame.quit()
 sys.exit()
